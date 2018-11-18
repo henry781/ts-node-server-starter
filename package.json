@@ -1,0 +1,16 @@
+{
+  "name": "ts-node-server-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node ./dist/App.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ts-node-server": "^1.1.0",
+    "typescript": "^3.1.6"
+  }
+}
