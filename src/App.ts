@@ -1,17 +1,16 @@
 import {Container} from 'inversify';
-import {UserController} from './controllers/UserController';
-import {PlaneController} from './controllers/PlaneController';
+import {StellarSystemController} from './controllers/StellarSystemController';
 import {Controller, Types, Server} from 'ts-node-server';
 
+
 const container = new Container();
-container.bind<Controller>(Types.Controller).to(UserController);
-container.bind<Controller>(Types.Controller).to(PlaneController);
+container.bind<Controller>(Types.Controller).to(StellarSystemController).inSingletonScope();
 
 const server = new Server({
     container: container,
     metrics: true,
     swagger: true,
-    healthchecks: false,
+    healthcheck: true,
     mongo: {}
 });
 
