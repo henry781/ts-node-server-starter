@@ -1,23 +1,47 @@
 import 'reflect-metadata';
-import {injectable, inject} from 'inversify';
+import {inject} from 'inversify';
 import {
     body,
     controller,
+    httpDelete,
     httpGet,
     httpPost,
     httpReply,
+    JsonConverter,
     MongoService,
-    pathParam, Reply,
-    Types,
-    WebApplicationError
+    pathParam,
+    Reply,
+    types,
+    WebServiceError,
 } from 'ts-node-server';
 import {StellarSystem} from '../models/StellarSystem';
+import {Planet} from "../models/Planet";
 
-@injectable()
 @controller('/v1/stellarSystems')
 export class StellarSystemController {
 
-    constructor(@inject(Types.MongoService) private db: MongoService) {
+    constructor(@inject(types.MongoService) private db: MongoService) {
+    }
+
+    /**
+     * Create a stellar system
+     */
+    @httpPost({
+        auth: 'jwt',
+        swagger: {
+            summary: 'Create a stellar system',
+            tags: ['Stellar Systems'],
+            operationId: 'create',
+            responses: {
+                201: {
+                    description: 'stellar system created successfully'
+                }
+            }
+        }
+    })
+    public async create(@body() stellarSystem: StellarSystem, @httpReply() reply: Reply) {
+        await this.db.insertOne(stellarSystem);
+        reply.status(201);
     }
 
     /**
@@ -25,6 +49,7 @@ export class StellarSystemController {
      */
     @httpGet({
         url: '/:name',
+        auth: ['jwt', 'basic'],
         swagger: {
             summary: 'Get a stellar system by name',
             tags: ['Stellar Systems'],
@@ -44,31 +69,74 @@ export class StellarSystemController {
         const system = await this.db.findOne(StellarSystem, {name: name});
 
         if (!system) {
-            throw new WebApplicationError('oups', 404);
+            throw new WebServiceError('oups', 404);
         }
 
         return system;
     }
 
     /**
-     * Create a stellar system
+     * List stellar systems
+     */
+    @httpGet({
+        swagger: {
+            summary: 'List stellar systems',
+            tags: ['Stellar Systems'],
+            operationId: 'list'
+        }
+    })
+    public async list() {
+        return this.db.find(StellarSystem);
+    }
+
+    /**
+     * Delete a stellar system
+     */
+    @httpDelete({
+        url: ':name',
+        swagger: {
+            summary: 'Remove a stellar system',
+            tags: ['Stellar Systems'],
+            operationId: 'remove'
+        }
+    })
+    public async remove(@pathParam('name')name: string, @httpReply() reply: Reply) {
+        await this.db.deleteOne(StellarSystem, {name: name});
+        reply.status(204);
+    }
+
+    /**
+     * Create a planet
      */
     @httpPost({
+        url: ':stellarSystem/planets',
+        auth: 'jwt',
         swagger: {
-            summary: 'Create a stellar system',
+            summary: 'Create a planet',
             tags: ['Stellar Systems'],
-            operationId: 'create',
+            operationId: 'createPlanet',
             responses: {
                 201: {
-                    description: 'stellar system created successfully'
+                    description: 'planet created successfully'
                 }
             }
         }
     })
-    public async create(@body() stellarSystem: StellarSystem, @httpReply() reply: Reply) {
+    public async createPlanet(@body() planet: Planet,
+                              @pathParam('stellarSystem') stellarSystemName: string,
+                              @httpReply() reply: Reply) {
 
-        await this.db.insertOne(stellarSystem);
+        const stellarSystem = await this.db.findOne<StellarSystem>(StellarSystem, {name: stellarSystemName});
 
-        reply.status(201).send();
+        if (!stellarSystem) {
+            throw new WebServiceError('stellar system cannot be found', 404);
+        }
+
+        if (stellarSystem.planets && stellarSystem.planets.some(p => p.name === planet.name)) {
+            throw new WebServiceError(`there is already a planet named <${planet.name}>`, 400);
+        }
+
+        await this.db.updateOne(StellarSystem, {name: stellarSystemName}, {$push: {planets: JsonConverter.serialize(planet)}});
+        reply.status(201);
     }
 }
