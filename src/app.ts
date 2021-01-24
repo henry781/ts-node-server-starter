@@ -12,6 +12,9 @@ const server = new Server({
     admin: {
         auth: 'basic'
     },
+    swagger: {
+        servers: []
+    },
     auth: {
         basic: {
             'demo': {
@@ -20,10 +23,8 @@ const server = new Server({
             }
         },
         jwt: {
-            authorizationUrl: 'http://localhost:9000/auth/realms/master/protocol/openid-connect/auth?nonce=',
-            certificate: '-----BEGIN CERTIFICATE-----\n' +
-                'MIICmzCCAYMCBgFnmcJMEDANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMTgxMjEwMjAxMzI2WhcNMjgxMjEwMjAxNTA2WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCC+IWX0wRGz2j2YnnrvTZKquRIRwWyLjVRNyASmrIqXfOkC/EIp7Y1KcZx7REnBP97oC1iCgIjnR1pO9rjZcuOnO+nAP9JT0lasMa2g2gxauh0Axs/9E1KTM233HAVA2EKtYWyR+b4uu9Ciu9AobMc0222pxVwxG//BRjKUTR56RyLUnSo7H0ZwBXqPRcRzBk4E/msng0ytV8aroUrQxJKWZS933DCFzG+vRWOstwTXnpGaFobpRGfzlXGmWdSFXLawmdou5h2ZrWzAu2Up/aFIvslDymyi3kBHBjv8HvxUlRA9AI8W+BflMcPstItHYF/dCUTsiZ0jMlNkzxRpcM3AgMBAAEwDQYJKoZIhvcNAQELBQADggEBAApz9kJe1BnLZLfD2ZWCjQIFn4PVnCtpZe7pJMBQ0Wu8l6zVK0gZli81NCzFhBYR46Jpgd7FMCnIiwoZqdw70nMfKE8YhkfSCUCTOMKnqkET7TX4hznGKIv0tgxJe6BVesaNAIMyWp3tb5T6srfKm8ptA/HDJcmcOtdIcLpk5rNrOLRHLfEvbToyg+YGd1tIKTwK54UjIltpTeTOHpBrZpPGdW+oa3XieQZZiBbxnGEh85uEc0wNvz3RGa7nzQS6/lePRtQ20DSF3XdpjoC41K5kCvQoS9GRpXHxLZU/0HiFu1YIAmCvK2DYzVTKG0/+iptL57zQD2+VNCdKdG7Wsq0=\n' +
-                '-----END CERTIFICATE-----',
+            authorizationUrl: 'http://localhost:8080/auth/realms/master/protocol/openid-connect/auth?nonce=',
+            certificate: 'MIICmzCCAYMCBgF3NTyWqjANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMjEwMTI0MTYyOTU5WhcNMzEwMTI0MTYzMTM5WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCdWS6+TbKy5LR0LfBXr5mbrSlxZiwbShbXmxrlku0xTwUO1L9fariV0otRB7S33rjwoTXdJHbpPdAruv0nIOuVGQzaNBaJDl5+aKLVqRF8CS4kN6KwcgBeP0hyDeXysPweTdmLoFz8rgeoYjYiDO6GlT3ppSLedgemt6ljMrhfEd2AR38ESpTzzB0tqkOqexo3offX5zB6pfU+j2rOH+aacQfhxxDm93yASZ04N4hq7rBLgUrY27tlpB+UxrkdWDqzf3gT3jiB3hHT44u7fPH5Qbd/gY6I5QVkqu6cqmaNzaiyw2DoVvRvKxq4FYSPA/cG0Pdy8Q5WQp1DWbkKqc6ZAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAEaq0Ezett25R7o+UVG9zZv/LWP8mVN4FaqUPSlVYACSdzGgZo+XrOtVCSqkBw33YpF0tBtEMBY1Oo0ZEfyICa8X7tACojgg5xy5efFQF79Qi6XuprDRXv6GW062Kxdx8cT4Bw/1/z0GwlOLolqfLm8QbdGP8GmSC9ONusx5KBIo7XaneO/YZocPfEd3zbyrx/Rc2J43ycMz+LnKpLA357qqVvzcg+9hxTZ6H/3SQS95XLNt9rw2q5pffutKcbtT5Dq8jND9G3SzcC2RL9GWIcnEOuz+9l4F9KVAdfaUzyKkxVB4IHy9CaFJJT66ZfiLyhRrv3GZB1RdUB51ivqKDmA=',
             application: 'test'
         }
     }

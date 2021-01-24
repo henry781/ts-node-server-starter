@@ -1,11 +1,11 @@
-import {jsonObject, jsonProperty} from 'tipify';
+import {arrayOf, jsonObject, jsonProperty} from 'tipify';
 import {Satellite} from './Satellite';
-import {ObjectIdConverter} from 'ts-node-server';
+import {objectIdCustomConverter} from 'ts-node-server';
 
 @jsonObject()
 export class Planet {
 
-    @jsonProperty('_id', ObjectIdConverter)
+    @jsonProperty('_id', objectIdCustomConverter)
     private _id?: string;
 
     public get id(): string {
@@ -49,7 +49,7 @@ export class Planet {
         this._dateOfDiscovery = value;
     }
 
-    @jsonProperty('satellites', [Satellite])
+    @jsonProperty('satellites', arrayOf(Satellite))
     private _satellites: Satellite[];
 
     public get satellites(): Satellite[] {

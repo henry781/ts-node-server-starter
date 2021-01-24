@@ -1,12 +1,12 @@
-import {collection, ObjectIdConverter} from 'ts-node-server';
-import {jsonObject, jsonProperty} from 'tipify';
+import {collection, objectIdCustomConverter} from 'ts-node-server';
+import {arrayOf, jsonObject, jsonProperty} from 'tipify';
 import {Planet} from './Planet';
 
 @collection('stellarSystems')
 @jsonObject()
 export class StellarSystem {
 
-    @jsonProperty('_id', ObjectIdConverter)
+    @jsonProperty('_id', objectIdCustomConverter)
     private _id?: string;
 
     public get id(): string {
@@ -28,7 +28,7 @@ export class StellarSystem {
         this._name = value;
     }
 
-    @jsonProperty('planets', [Planet])
+    @jsonProperty('planets', arrayOf(Planet))
     private _planets?: Planet[];
 
     public get planets(): Planet[] {

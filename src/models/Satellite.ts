@@ -1,10 +1,10 @@
 import {jsonObject, jsonProperty} from 'tipify';
-import {ObjectIdConverter} from 'ts-node-server';
+import {objectIdCustomConverter} from 'ts-node-server';
 
 @jsonObject()
 export class Satellite {
 
-    @jsonProperty('_id', ObjectIdConverter)
+    @jsonProperty('_id', objectIdCustomConverter)
     private _id?: string;
 
     public get id(): string {

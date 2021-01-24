@@ -2,12 +2,11 @@ import 'reflect-metadata';
 import {inject} from 'inversify';
 import {
     body,
-    controller,
+    controller, getLogger,
     httpDelete,
     httpGet,
     httpPost,
-    httpReply,
-    JsonConverter,
+    httpReply, jsonConverter,
     MongoService,
     pathParam,
     Reply,
@@ -86,7 +85,10 @@ export class StellarSystemController {
         }
     })
     public async list() {
-        return this.db.find(StellarSystem);
+        const logger = getLogger('list', this);
+        const results = await this.db.find(StellarSystem);
+        logger.debug(`got <${results.length}> results`);
+        return results;
     }
 
     /**
@@ -136,7 +138,7 @@ export class StellarSystemController {
             throw new WebServiceError(`there is already a planet named <${planet.name}>`, 400);
         }
 
-        await this.db.updateOne(StellarSystem, {name: stellarSystemName}, {$push: {planets: JsonConverter.serialize(planet)}});
+        await this.db.updateOne(StellarSystem, {name: stellarSystemName}, {$push: {planets: jsonConverter.serialize(planet)}});
         reply.status(201);
     }
 }

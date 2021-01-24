@@ -4,17 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --inlineSourceMap --inlineSources",
-    "start": "npm run build && node ./dist/app.js"
+    "clean": "rm -rf ./dist/*",
+    "start": "npm run clean && webpack --progress --config webpack.dev.config.js --watch",
+    "build": "npm run clean && webpack --progress --config webpack.prod.config.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ts-node-server": "2.0.0",
-    "typescript": "^3.1.6",
-    "inversify": "5.0.1",
-    "tipify": "2.0.0",
-    "mongodb": "3.2.1",
-    "@henry781/querysearch": "0.2.0"
+    "@henry781/querysearch": "0.2.0",
+    "inversify": "5.0.5",
+    "mongodb": "3.6.3",
+    "tipify": "3.2.0",
+    "ts-node-server": "3.1.0"
+  },
+  "devDependencies": {
+    "nodemon-webpack-plugin": "^4.4.4",
+    "ts-loader": "^8.0.14",
+    "webpack": "^5.17.0",
+    "webpack-cli": "^4.4.0",
+    "copy-webpack-plugin": "^7.0.0",
+    "pino-pretty": "^4.3.0",
+    "dotenv": "^8.2.0",
+    "typescript": "^4.1.3"
   }
 }
